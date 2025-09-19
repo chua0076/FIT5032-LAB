@@ -1,3 +1,7 @@
+<script setup>
+import { isLogin,logout } from '@/auth';
+</script>
+
 <template>
   <!-- Using Bootstrap's Header template (starter code) -->
   <!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
@@ -5,10 +9,19 @@
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">Home (Week 4)</a>
+          <router-link to="/" class="nav-link" active-class="active" aria-current="page"
+            >Home (Week 5)</router-link
+          >
         </li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Contact us</a></li>
+        <li class="nav-item">
+          <router-link to="/about" class="nav-link" active-class="active" v-if="isLogin">About</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/Firelogin" class="nav-link" active-class="active">Firebase Login</router-link>
+        </li>
       </ul>
     </header>
   </div>
