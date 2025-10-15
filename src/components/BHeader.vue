@@ -1,7 +1,20 @@
 <script setup>
-import { isLogin,logout } from '@/auth';
-</script>
+import { isLogin, logout, currentUser, currentRole } from '@/auth'
+import { useRouter } from 'vue-router'
+import { getAuth, signOut } from "firebase/auth";
+const router = useRouter()
+const auth = getAuth();
+const handleLogout = () => {
+  signOut(auth).then(() => {
+    logout();
+    console.log("Logout:", auth.currentUser)
+    router.push('/login')
+  }).catch((error) => {
+    console.log(error.code)
+  });
 
+}
+</script>
 <template>
   <!-- Using Bootstrap's Header template (starter code) -->
   <!-- https://getbootstrap.com/docs/5.0/examples/headers/ -->
@@ -9,18 +22,42 @@ import { isLogin,logout } from '@/auth';
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <router-link to="/" class="nav-link" active-class="active" aria-current="page"
-            >Home (Week 5)</router-link
-          >
+          <router-link to="/" class="nav-link" active-class="active" aria-current="page">Home (Week 5)</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/addBook" class="nav-link" active-class="active" aria-current="page">Add Book</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/GetBookCount" class="nav-link" active-class="active" aria-current="page">Get Book Count</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/WeatherCheck" class="nav-link" active-class="active" aria-current="page">Get Weather</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/about" class="nav-link" active-class="active" v-if="isLogin">About</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+          <router-link to="/CountBookAPI" class="nav-link" active-class="active">Count Book API</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/Firelogin" class="nav-link" active-class="active">Firebase Login</router-link>
+          <router-link to="/login" class="nav-link" active-class="active" v-if="!isLogin">Login</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/FireLogin" class="nav-link" active-class="active" v-if="!isLogin">Firebase Login</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/FireRegister" class="nav-link" active-class="active" v-if="!isLogin">Firebase
+            Register</router-link>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" active-class="active" v-if="isLogin">Hi, {{ currentUser }}</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" active-class="active" v-if="isLogin && currentRole === 'admin'">$${{ currentRole
+          }}</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" active-class="active" v-if="isLogin" @click="handleLogout">Logout</button>
         </li>
       </ul>
     </header>
@@ -43,6 +80,7 @@ import { isLogin,logout } from '@/auth';
   background-color: var(--bs-dark);
   border-color: var(--bs-gray);
 }
+
 .form-control-dark:focus {
   color: #fff;
   background-color: var(--bs-dark);
