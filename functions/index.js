@@ -28,7 +28,7 @@ admin.initializeApp();
 exports.countBooks=onRequest((req, res) => {
   cors(req, res, async () => {
     try {
-      const booksCollection = admin.firestore().collection("Books");
+      const booksCollection = admin.firestore().collection("books");
       const snapshot = await booksCollection.get();
       const count = snapshot.size;
 
@@ -43,7 +43,7 @@ exports.countBooks=onRequest((req, res) => {
 exports.addBooks=onRequest((req, res) => {
   cors(req, res, async () => {
     try {
-      const booksCollection = admin.firestore().collection("Books");
+      const booksCollection = admin.firestore().collection("books");
       if (req.method !== "POST"){
         return res.status(405).send("Method must be POST");
       }
