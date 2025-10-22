@@ -26,13 +26,13 @@ import axios from 'axios';
 import { ref } from 'vue';
 
 const city = ref('')
-const API_key = '75e39755efb65136aa09a4c9daa11954'
+const apiKey = import.meta.env.VITE_GET_WEATHER_KEY
 const weather = ref (null)
 const iconURL = ref(null)
 
 const searchByCity = async() =>
 {
-    const {data} = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${API_key}&units=metric`)
+    const {data} = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apiKey}&units=metric`)
     console.log(data)
     weather.value = data
     console.log(data.weather[0].icon)
@@ -42,9 +42,9 @@ const searchLocalWeather = async() =>
 {
     navigator.geolocation.getCurrentPosition(
       async({coords}) =>{
-        const {data} = await axios.get(`https://api.openweathermap.org/data/3.0/onecall/overview?lat=${coords.latitude}&lon=${coords.latitude}&appid=${API_key}&units=metric`)
+        const {data} = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${coords.latitude}&lon=${coords.latitude}&appid=${apiKey}&units=metric`)
         weather.value = data
-        iconURL.value = null
+        iconURL.value = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
       }
     )
 }
