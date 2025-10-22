@@ -44,11 +44,11 @@ exports.addBooks=onRequest((req, res) => {
   cors(req, res, async () => {
     try {
       const booksCollection = admin.firestore().collection("books");
-      if (req.method !== "POST"){
+      if (req.method !== "POST") {
         return res.status(405).send("Method must be POST");
       }
       const {isbn, name} = req.body;
-      if (!isbn || isNaN(isbn || !name)){
+      if (!isbn || isNaN(isbn || !name)) {
         return res.status(400).send("Invalid input data");
       }
       const uppercaseName = name.toUpperCase();
